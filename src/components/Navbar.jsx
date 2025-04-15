@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, History, Settings, TrendingUp, Ruler } from 'lucide-react';
+import { Home, Calendar, History, Settings, TrendingUp, Ruler, Dumbbell } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Navbar = () => {
@@ -8,6 +8,7 @@ const Navbar = () => {
 
   const navItems = [
     { path: '/', icon: Home, label: 'Dashboard' },
+    { path: '/planner', icon: Dumbbell, label: 'Treinos' },
     { path: '/calendar', icon: Calendar, label: 'Calendário' },
     { path: '/history', icon: History, label: 'Histórico' },
     { path: '/progress', icon: TrendingUp, label: 'Progresso' },

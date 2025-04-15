@@ -30,17 +30,52 @@ export const WorkoutProvider = ({ children }) => {
   // Carrega dados do localStorage na montagem
   useEffect(() => {
     const loadData = async () => {
+      setIsLoading(true);
       try {
-        const savedWorkouts = await getWorkouts();
-        const savedCompletedWorkouts = await getCompletedWorkouts();
-        const savedSchedule = await getSchedule();
+        console.log('Iniciando carregamento de dados...');
         
-        if (savedWorkouts) setWorkouts(savedWorkouts);
-        if (savedCompletedWorkouts) setCompletedWorkouts(savedCompletedWorkouts);
-        if (savedSchedule) setSchedule(savedSchedule);
+        const savedWorkouts = await getWorkouts();
+        console.log('Treinos carregados do storage:', savedWorkouts);
+        
+        const savedCompletedWorkouts = await getCompletedWorkouts();
+        console.log('Treinos concluídos carregados:', savedCompletedWorkouts);
+        
+        const savedSchedule = await getSchedule();
+        console.log('Agenda carregada:', savedSchedule);
+
+        if (Array.isArray(savedWorkouts)) {
+          setWorkouts(savedWorkouts);
+        } else {
+          console.warn('Treinos inválidos no storage, iniciando com array vazio');
+          setWorkouts([]);
+        }
+
+        if (Array.isArray(savedCompletedWorkouts)) {
+          setCompletedWorkouts(savedCompletedWorkouts);
+        } else {
+          setCompletedWorkouts([]);
+        }
+
+        if (savedSchedule && typeof savedSchedule === 'object') {
+          setSchedule(savedSchedule);
+        }
+        
+        console.log('Dados carregados com sucesso');
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
         toast.error('Erro ao carregar seus dados de treino');
+        // Garante estado inicial válido mesmo em caso de erro
+        setWorkouts([]);
+        setCompletedWorkouts([]);
+        setSchedule({
+          monday: [],
+          tuesday: [],
+          wednesday: [],
+          thursday: [],
+          friday: [],
+          saturday: [],
+          sunday: []
+        });
       } finally {
         setIsLoading(false);
       }
@@ -52,6 +87,7 @@ export const WorkoutProvider = ({ children }) => {
   // Salva treinos quando alterados
   useEffect(() => {
     if (!isLoading) {
+      console.log('Salvando treinos:', workouts);
       saveWorkouts(workouts);
     }
   }, [workouts, isLoading]);
@@ -191,6 +227,11 @@ export const WorkoutProvider = ({ children }) => {
     return completedWorkout;
   };
 
+  const addCompletedWorkout = (completedWorkout) => {
+    setCompletedWorkouts([...completedWorkouts, completedWorkout]);
+    toast.success('Treino concluído com sucesso!');
+  };
+
   const value = {
     workouts,
     completedWorkouts,
@@ -205,15 +246,18 @@ export const WorkoutProvider = ({ children }) => {
     scheduleWorkout,
     unscheduleWorkout,
     markWorkoutComplete,
-    addCompletedWorkout: (completedWorkout) => {
-      setCompletedWorkouts([...completedWorkouts, completedWorkout]);
-      toast.success('Treino concluído com sucesso!');
-    }
+    addCompletedWorkout
   };
 
   return (
     <WorkoutContext.Provider value={value}>
-      {children}
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        </div>
+      ) : (
+        children
+      )}
     </WorkoutContext.Provider>
   );
 };
