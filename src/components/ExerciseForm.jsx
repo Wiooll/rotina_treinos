@@ -1,0 +1,227 @@
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Plus } from 'lucide-react';
+
+const exerciseCategories = [
+  'Peito',
+  'Costas',
+  'Pernas',
+  'Ombros',
+  'Bíceps',
+  'Tríceps',
+  'Abdômen',
+  'Cardio'
+];
+
+const ExerciseForm = ({ onAddExercise }) => {
+  const [name, setName] = useState('');
+  const [sets, setSets] = useState('');
+  const [reps, setReps] = useState('');
+  const [weight, setWeight] = useState('');
+  const [restTime, setRestTime] = useState('');
+  const [category, setCategory] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!name.trim()) {
+      newErrors.name = 'Nome do exercício é obrigatório';
+    }
+    
+    if (!sets || sets < 1) {
+      newErrors.sets = 'Número de séries deve ser maior que 0';
+    }
+    
+    if (!reps || reps < 1) {
+      newErrors.reps = 'Número de repetições deve ser maior que 0';
+    }
+    
+    if (weight && weight < 0) {
+      newErrors.weight = 'Peso não pode ser negativo';
+    }
+    
+    if (restTime && restTime < 0) {
+      newErrors.restTime = 'Tempo de descanso não pode ser negativo';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    const exercise = {
+      id: Date.now().toString(),
+      name: name.trim(),
+      sets: parseInt(sets),
+      reps: parseInt(reps),
+      weight: weight ? parseFloat(weight) : null,
+      restTime: restTime ? parseInt(restTime) : null,
+      category: category || null
+    };
+
+    onAddExercise(exercise);
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setName('');
+    setSets('');
+    setReps('');
+    setWeight('');
+    setRestTime('');
+    setCategory('');
+    setErrors({});
+  };
+
+  return (
+    <motion.form
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6"
+      onSubmit={handleSubmit}
+    >
+      <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+        Adicionar Exercício
+      </h4>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Nome do Exercício
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
+              errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            placeholder="ex: Supino, Agachamento, etc."
+            required
+          />
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Categoria
+          </label>
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white"
+          >
+            <option value="">Selecione uma categoria</option>
+            {exerciseCategories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="sets" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Número de Séries
+          </label>
+          <input
+            type="number"
+            id="sets"
+            value={sets}
+            onChange={(e) => setSets(e.target.value)}
+            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
+              errors.sets ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            min="1"
+            required
+          />
+          {errors.sets && (
+            <p className="text-red-500 text-sm mt-1">{errors.sets}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="reps" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Número de Repetições
+          </label>
+          <input
+            type="number"
+            id="reps"
+            value={reps}
+            onChange={(e) => setReps(e.target.value)}
+            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
+              errors.reps ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            min="1"
+            required
+          />
+          {errors.reps && (
+            <p className="text-red-500 text-sm mt-1">{errors.reps}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="weight" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Peso (kg)
+          </label>
+          <input
+            type="number"
+            id="weight"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
+              errors.weight ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            min="0"
+            step="0.5"
+          />
+          {errors.weight && (
+            <p className="text-red-500 text-sm mt-1">{errors.weight}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="restTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Tempo de Descanso (segundos)
+          </label>
+          <input
+            type="number"
+            id="restTime"
+            value={restTime}
+            onChange={(e) => setRestTime(e.target.value)}
+            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
+              errors.restTime ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            min="0"
+          />
+          {errors.restTime && (
+            <p className="text-red-500 text-sm mt-1">{errors.restTime}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          type="submit"
+          className="flex items-center gap-2 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+        >
+          <Plus className="w-5 h-5" />
+          Adicionar Exercício
+        </motion.button>
+      </div>
+    </motion.form>
+  );
+};
+
+export default ExerciseForm;
