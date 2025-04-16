@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { WorkoutContext } from '../contexts/WorkoutContext';
 import ExerciseForm from '../components/ExerciseForm';
-import TimerModal from '../components/TimerModal';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Trash2, X, Timer, Copy, ArrowUpDown } from 'lucide-react';
+import { Plus, Trash2, X, Copy, ArrowUpDown } from 'lucide-react';
 
 const WorkoutPlanner = () => {
   const { 
@@ -17,7 +16,6 @@ const WorkoutPlanner = () => {
     isLoading 
   } = useContext(WorkoutContext);
 
-  const [showTimer, setShowTimer] = useState(false);
   const [workoutName, setWorkoutName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
 
@@ -244,15 +242,6 @@ const WorkoutPlanner = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowTimer(true)}
-                    className="p-2 text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400"
-                    title="Temporizador"
-                  >
-                    <Timer className="w-5 h-5" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedWorkout(null)}
                     className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   >
@@ -313,12 +302,6 @@ const WorkoutPlanner = () => {
           )}
         </div>
       </div>
-
-      <TimerModal
-        isOpen={showTimer}
-        onClose={() => setShowTimer(false)}
-        initialTime={60}
-      />
     </div>
   );
 };

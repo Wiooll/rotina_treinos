@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { WorkoutContext } from '../contexts/WorkoutContext';
-import TimerModal from '../components/TimerModal';
 import { ChevronLeft, ChevronRight, CheckCircle2, XCircle } from 'lucide-react';
 
 function WorkoutExecution() {
@@ -12,7 +11,6 @@ function WorkoutExecution() {
   const [currentWorkout, setCurrentWorkout] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
-  const [showTimer, setShowTimer] = useState(false);
   const [exerciseProgress, setExerciseProgress] = useState([]);
   const [isWorkoutComplete, setIsWorkoutComplete] = useState(false);
 
@@ -20,7 +18,6 @@ function WorkoutExecution() {
     const workout = workouts.find(w => w.id === id);
     if (workout) {
       setCurrentWorkout(workout);
-      // Inicializa o progresso dos exercícios
       setExerciseProgress(
         workout.exercises.map(exercise => ({
           completedSets: new Array(exercise.sets).fill(false)
@@ -58,11 +55,10 @@ function WorkoutExecution() {
     setExerciseProgress(newProgress);
     
     if (!isLastSet) {
-      setShowTimer(true);
+      setCurrentSetIndex(prev => prev + 1);
     } else if (!isLastExercise) {
       setCurrentExerciseIndex(prev => prev + 1);
       setCurrentSetIndex(0);
-      setShowTimer(true);
     } else {
       handleWorkoutComplete();
     }
@@ -91,16 +87,6 @@ function WorkoutExecution() {
     };
     addCompletedWorkout(completedWorkout);
     setIsWorkoutComplete(true);
-  };
-
-  const handleTimerClose = () => {
-    setShowTimer(false);
-    if (isLastSet && !isLastExercise) {
-      setCurrentExerciseIndex(prev => prev + 1);
-      setCurrentSetIndex(0);
-    } else if (!isLastSet) {
-      setCurrentSetIndex(prev => prev + 1);
-    }
   };
 
   if (isWorkoutComplete) {
@@ -219,13 +205,6 @@ function WorkoutExecution() {
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </div>
         </div>
-      )}
-
-      {showTimer && (
-        <TimerModal
-          initialTime={currentExercise.rest || 60}
-          onClose={handleTimerClose}
-        />
       )}
     </div>
   );

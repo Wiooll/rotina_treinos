@@ -62,6 +62,10 @@ const BodyMeasurements = () => {
     });
   };
 
+  const inputClasses = `w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 
+    dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 
+    focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`;
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
       <div className="max-w-4xl mx-auto">
@@ -90,7 +94,7 @@ const BodyMeasurements = () => {
             <form onSubmit={handleSubmit} className="grid gap-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Peso (kg)
                   </label>
                   <input
@@ -99,12 +103,13 @@ const BodyMeasurements = () => {
                     step="0.1"
                     value={measurements.weight}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 70.5"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Altura (cm)
                   </label>
                   <input
@@ -112,7 +117,8 @@ const BodyMeasurements = () => {
                     name="height"
                     value={measurements.height}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 175"
                     required
                   />
                 </div>
@@ -120,7 +126,7 @@ const BodyMeasurements = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Tórax (cm)
                   </label>
                   <input
@@ -128,11 +134,12 @@ const BodyMeasurements = () => {
                     name="chest"
                     value={measurements.chest}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 95"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Cintura (cm)
                   </label>
                   <input
@@ -140,14 +147,15 @@ const BodyMeasurements = () => {
                     name="waist"
                     value={measurements.waist}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 80"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Quadril (cm)
                   </label>
                   <input
@@ -155,11 +163,12 @@ const BodyMeasurements = () => {
                     name="hips"
                     value={measurements.hips}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 100"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Bíceps (cm)
                   </label>
                   <input
@@ -167,14 +176,15 @@ const BodyMeasurements = () => {
                     name="biceps"
                     value={measurements.biceps}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 35"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Coxas (cm)
                   </label>
                   <input
@@ -182,11 +192,12 @@ const BodyMeasurements = () => {
                     name="thighs"
                     value={measurements.thighs}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 55"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Panturrilhas (cm)
                   </label>
                   <input
@@ -194,7 +205,8 @@ const BodyMeasurements = () => {
                     name="calves"
                     value={measurements.calves}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent"
+                    className={inputClasses}
+                    placeholder="ex: 38"
                   />
                 </div>
               </div>
@@ -203,7 +215,7 @@ const BodyMeasurements = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full mt-4 bg-primary-500 hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="w-full mt-4 bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
               >
                 Salvar Medidas
               </motion.button>
@@ -225,10 +237,10 @@ const BodyMeasurements = () => {
 
             {history.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400">
                   Nenhuma medida registrada ainda.
                 </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
                   Adicione suas primeiras medidas usando o formulário ao lado.
                 </p>
               </div>

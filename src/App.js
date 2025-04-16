@@ -49,8 +49,17 @@ function App() {
       <AuthProvider>
         <WorkoutProvider>
           <Router>
-            <div className="flex flex-col h-screen bg-gray-900 text-white">
-              <Toaster position="top-center" />
+            <div className="flex flex-col h-screen bg-white dark:bg-gray-900">
+              <Toaster 
+                position="top-center"
+                toastOptions={{
+                  style: {
+                    background: '#333',
+                    color: '#fff',
+                  },
+                  duration: 3000,
+                }} 
+              />
               
               {!isOnline && (
                 <div className="bg-yellow-600 text-white text-center p-2 text-sm">
@@ -58,7 +67,7 @@ function App() {
                 </div>
               )}
               
-              <main className="flex-1 overflow-auto pb-16 md:pb-0">
+              <main className="flex-1 overflow-auto pb-16 md:pb-0 text-gray-900 dark:text-white">
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/planner" element={<WorkoutPlanner />} />

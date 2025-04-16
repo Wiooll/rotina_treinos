@@ -18,7 +18,6 @@ const ExerciseForm = ({ onAddExercise }) => {
   const [sets, setSets] = useState('');
   const [reps, setReps] = useState('');
   const [weight, setWeight] = useState('');
-  const [restTime, setRestTime] = useState('');
   const [category, setCategory] = useState('');
   const [errors, setErrors] = useState({});
 
@@ -40,10 +39,6 @@ const ExerciseForm = ({ onAddExercise }) => {
     if (weight && weight < 0) {
       newErrors.weight = 'Peso não pode ser negativo';
     }
-    
-    if (restTime && restTime < 0) {
-      newErrors.restTime = 'Tempo de descanso não pode ser negativo';
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -62,7 +57,6 @@ const ExerciseForm = ({ onAddExercise }) => {
       sets: parseInt(sets),
       reps: parseInt(reps),
       weight: weight ? parseFloat(weight) : null,
-      restTime: restTime ? parseInt(restTime) : null,
       category: category || null
     };
 
@@ -75,16 +69,23 @@ const ExerciseForm = ({ onAddExercise }) => {
     setSets('');
     setReps('');
     setWeight('');
-    setRestTime('');
     setCategory('');
     setErrors({});
   };
+
+  const inputClasses = `w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 
+    rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white 
+    placeholder-gray-500 dark:placeholder-gray-400`;
+
+  const errorInputClasses = `w-full px-4 py-2 bg-white dark:bg-gray-800 border border-red-500 
+    rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent text-gray-900 dark:text-white 
+    placeholder-gray-500 dark:placeholder-gray-400`;
 
   return (
     <motion.form
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6"
+      className="space-y-6 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm"
       onSubmit={handleSubmit}
     >
       <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -93,7 +94,7 @@ const ExerciseForm = ({ onAddExercise }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
             Nome do Exercício
           </label>
           <input
@@ -101,11 +102,8 @@ const ExerciseForm = ({ onAddExercise }) => {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
-              errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            className={errors.name ? errorInputClasses : inputClasses}
             placeholder="ex: Supino, Agachamento, etc."
-            required
           />
           {errors.name && (
             <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -113,14 +111,14 @@ const ExerciseForm = ({ onAddExercise }) => {
         </div>
 
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
             Categoria
           </label>
           <select
             id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white"
+            className={inputClasses}
           >
             <option value="">Selecione uma categoria</option>
             {exerciseCategories.map(cat => (
@@ -130,7 +128,7 @@ const ExerciseForm = ({ onAddExercise }) => {
         </div>
 
         <div>
-          <label htmlFor="sets" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="sets" className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
             Número de Séries
           </label>
           <input
@@ -138,11 +136,9 @@ const ExerciseForm = ({ onAddExercise }) => {
             id="sets"
             value={sets}
             onChange={(e) => setSets(e.target.value)}
-            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
-              errors.sets ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            className={errors.sets ? errorInputClasses : inputClasses}
             min="1"
-            required
+            placeholder="ex: 3"
           />
           {errors.sets && (
             <p className="text-red-500 text-sm mt-1">{errors.sets}</p>
@@ -150,7 +146,7 @@ const ExerciseForm = ({ onAddExercise }) => {
         </div>
 
         <div>
-          <label htmlFor="reps" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="reps" className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
             Número de Repetições
           </label>
           <input
@@ -158,11 +154,9 @@ const ExerciseForm = ({ onAddExercise }) => {
             id="reps"
             value={reps}
             onChange={(e) => setReps(e.target.value)}
-            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
-              errors.reps ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            className={errors.reps ? errorInputClasses : inputClasses}
             min="1"
-            required
+            placeholder="ex: 12"
           />
           {errors.reps && (
             <p className="text-red-500 text-sm mt-1">{errors.reps}</p>
@@ -170,7 +164,7 @@ const ExerciseForm = ({ onAddExercise }) => {
         </div>
 
         <div>
-          <label htmlFor="weight" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="weight" className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
             Peso (kg)
           </label>
           <input
@@ -178,33 +172,13 @@ const ExerciseForm = ({ onAddExercise }) => {
             id="weight"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
-              errors.weight ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
+            className={errors.weight ? errorInputClasses : inputClasses}
             min="0"
             step="0.5"
+            placeholder="ex: 10"
           />
           {errors.weight && (
             <p className="text-red-500 text-sm mt-1">{errors.weight}</p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="restTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Tempo de Descanso (segundos)
-          </label>
-          <input
-            type="number"
-            id="restTime"
-            value={restTime}
-            onChange={(e) => setRestTime(e.target.value)}
-            className={`w-full px-4 py-2 bg-white dark:bg-gray-800 border ${
-              errors.restTime ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-            } rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:text-white`}
-            min="0"
-          />
-          {errors.restTime && (
-            <p className="text-red-500 text-sm mt-1">{errors.restTime}</p>
           )}
         </div>
       </div>
