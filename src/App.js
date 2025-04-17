@@ -14,13 +14,15 @@ import { WorkoutProvider } from './contexts/WorkoutContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import './App.css';
 
-if (!process.env.REACT_APP_CLERK_PUBLISHABLE_KEY) {
+const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
+if (!clerkPubKey) {
   throw new Error("Chave pública do Clerk não encontrada");
 }
 
 function App() {
   return (
-    <ClerkProvider publishableKey={process.env.REACT_APP_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={clerkPubKey}>
       <ThemeProvider>
         <WorkoutProvider>
           <Router>

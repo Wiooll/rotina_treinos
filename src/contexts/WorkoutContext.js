@@ -246,7 +246,11 @@ export const WorkoutProvider = ({ children }) => {
     scheduleWorkout,
     unscheduleWorkout,
     markWorkoutComplete,
-    addCompletedWorkout
+    addCompletedWorkout,
+    updateSchedule: (newSchedule) => {
+      setSchedule(newSchedule);
+      saveSchedule(newSchedule);
+    }
   };
 
   return (

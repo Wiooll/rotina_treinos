@@ -118,92 +118,133 @@ function WorkoutExecution() {
   }
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-        >
-          <ChevronLeft className="w-5 h-5 mr-1" />
-          Voltar
-        </button>
-        <h1 className="text-xl font-bold">{currentWorkout.name}</h1>
-        <div className="w-8" /> {/* Espaçador */}
-      </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Execução do Treino</h1>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">
-            Exercício {currentExerciseIndex + 1} de {currentWorkout.exercises.length}
-          </h2>
-          <h3 className="text-2xl font-bold mb-4">{currentExercise.name}</h3>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-gray-600 dark:text-gray-400">Repetições</p>
-              <p className="font-semibold">{currentExercise.reps}x</p>
+      {currentWorkout ? (
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">{currentWorkout.name}</h2>
+
+          {currentExercise && (
+            <div className="mb-8">
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">
+                  {currentExercise.name}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  {currentExercise.category} • {currentExercise.weight}kg
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Série Atual</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {currentSetIndex + 1}/{currentExercise.sets}
+                    </p>
+                  </div>
+                  <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Repetições</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {currentExercise.reps}
+                    </p>
+                  </div>
+                  <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Peso</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {currentExercise.weight}kg
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-center space-x-4">
+                  <button
+                    onClick={handleCompleteSet}
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-200"
+                  >
+                    Completar Série
+                  </button>
+                  <button
+                    onClick={handleSkipSet}
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-200"
+                  >
+                    Pular Série
+                  </button>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-gray-600 dark:text-gray-400">Peso</p>
-              <p className="font-semibold">{currentExercise.weight}kg</p>
+          )}
+
+          <div className="mt-8">
+            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Progresso do Treino</h3>
+            <div className="space-y-4">
+              {currentWorkout.exercises.map((exercise, index) => (
+                <div
+                  key={index}
+                  className={`
+                    p-4 rounded-lg
+                    ${index < currentExerciseIndex ? 'bg-green-100 dark:bg-green-900' : 
+                      index === currentExerciseIndex ? 'bg-blue-100 dark:bg-blue-900' : 
+                      'bg-gray-50 dark:bg-gray-700'}
+                  `}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">{exercise.name}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        {exercise.sets} séries x {exercise.reps} repetições • {exercise.weight}kg
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      {index < currentExerciseIndex && (
+                        <span className="text-green-600 dark:text-green-400">
+                          <svg className="h-6 w-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {index === currentExerciseIndex && (
+                    <div className="mt-2">
+                      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                        <div
+                          className="bg-blue-500 h-2.5 rounded-full"
+                          style={{ width: `${(currentSetIndex / exercise.sets) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        <div className="mb-6">
-          <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-            Progresso das Séries
-          </h4>
-          <div className="flex gap-2">
-            {exerciseProgress[currentExerciseIndex].completedSets.map((completed, index) => (
-              <div
-                key={index}
-                className={`flex-1 h-2 rounded-full ${
-                  completed
-                    ? 'bg-green-500'
-                    : index === currentSetIndex
-                    ? 'bg-primary-500'
-                    : 'bg-gray-200 dark:bg-gray-700'
-                }`}
-              />
-            ))}
-          </div>
+          {isWorkoutComplete && (
+            <div className="mt-8 text-center">
+              <h3 className="text-xl font-bold text-green-600 dark:text-green-400 mb-4">
+                Parabéns! Treino Concluído!
+              </h3>
+              <button
+                onClick={() => navigate('/history')}
+                className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow transition duration-200"
+              >
+                Finalizar Treino
+              </button>
+            </div>
+          )}
         </div>
-
-        <div className="flex gap-4">
-          <button
-            onClick={handleCompleteSet}
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+      ) : (
+        <div className="text-center py-12">
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
+            Nenhum treino selecionado. Por favor, selecione um treino para começar.
+          </p>
+          <Link
+            to="/workout-planner"
+            className="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-200"
           >
-            <CheckCircle2 className="w-5 h-5" />
-            Completar Série
-          </button>
-          <button
-            onClick={handleSkipSet}
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          >
-            <XCircle className="w-5 h-5" />
-            Pular
-          </button>
-        </div>
-      </div>
-
-      {currentExerciseIndex < currentWorkout.exercises.length - 1 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-            Próximo Exercício
-          </h3>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-semibold">
-                {currentWorkout.exercises[currentExerciseIndex + 1].name}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {currentWorkout.exercises[currentExerciseIndex + 1].sets} séries ×{' '}
-                {currentWorkout.exercises[currentExerciseIndex + 1].reps} repetições
-              </p>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </div>
+            Ir para o Planejador de Treinos
+          </Link>
         </div>
       )}
     </div>

@@ -74,6 +74,16 @@ const WorkoutPlanner = () => {
     );
   }
 
+  const inputClasses = `
+    w-full px-3 py-2 
+    bg-white dark:bg-gray-800 
+    border border-gray-300 dark:border-gray-600 
+    rounded-md shadow-sm 
+    text-gray-900 dark:text-white 
+    placeholder-gray-500 dark:placeholder-gray-400
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+  `;
+
   return (
     <div className="container mx-auto px-4 py-8 pb-24">
       <div className="mb-8">
@@ -118,7 +128,7 @@ const WorkoutPlanner = () => {
                       value={workoutName}
                       onChange={(e) => setWorkoutName(e.target.value)}
                       placeholder="Nome do treino"
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white text-sm"
+                      className={inputClasses}
                     />
                     <motion.button
                       whileHover={{ scale: 1.05 }}
