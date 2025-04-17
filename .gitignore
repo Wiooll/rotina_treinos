@@ -83,3 +83,6 @@ node_modules
 node_modules
 node_modules
 node_modules
+/node_modules/.cache
+*.pack
+/node_modules

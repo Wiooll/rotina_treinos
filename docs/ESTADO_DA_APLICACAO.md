@@ -8,12 +8,25 @@ Malhaê é uma aplicação web para acompanhamento de treinos e evolução físi
 
 ### Tecnologias Principais
 
-- React 18
-- React Router DOM v6
-- Clerk (Autenticação)
-- TailwindCSS (Estilização)
-- React Hot Toast (Notificações)
-- Framer Motion (Animações)
+- React 18.2.0
+- React Router DOM v6.20.0
+- Clerk v4.29.7 (Autenticação)
+- TailwindCSS + HeadlessUI v1.7.0 (Estilização)
+- React Hot Toast v2.4.1 (Notificações)
+- Framer Motion v6.0.0 (Animações)
+- UUID v9.0.0 (Geração de IDs únicos)
+
+### Organização de Diretórios
+
+```
+src/
+├── components/     # Componentes reutilizáveis
+├── pages/         # Páginas da aplicação
+├── contexts/      # Contextos React
+├── services/      # Serviços e utilitários
+├── App.jsx        # Componente principal
+└── index.js       # Ponto de entrada
+```
 
 ### Contextos
 
@@ -89,60 +102,115 @@ Malhaê é uma aplicação web para acompanhamento de treinos e evolução físi
    - Validação de campos
    - Integração com WorkoutContext
 
-## Fluxo de Autenticação
+## Estado dos Dados
 
-- Implementado via Clerk
-- Rotas protegidas usando `SignedIn` e `SignedOut`
-- Páginas de login/signup personalizadas
-- Redirecionamento automático para login quando necessário
+### Estrutura de Dados Principal
 
-## Estado da Dados
+```typescript
+interface Workout {
+  id: string;
+  name: string;
+  exercises: Exercise[];
+  createdAt: string;
+  updatedAt: string;
+}
 
-- Treinos: Nome, exercícios, séries, repetições
-- Exercícios: Nome, categoria, peso, séries, repetições
-- Medidas: Peso, altura, circunferências
-- Progresso: Histórico de treinos, evolução de medidas
+interface Exercise {
+  id: string;
+  name: string;
+  sets: number;
+  reps: number;
+  weight: number;
+  notes?: string;
+}
 
-## Funcionalidades Ativas
+interface BodyMeasurement {
+  id: string;
+  date: string;
+  weight?: number;
+  height?: number;
+  measurements: {
+    chest?: number;
+    waist?: number;
+    arms?: number;
+    legs?: number;
+    // ... outras medidas
+  };
+}
+```
 
-1. **Gestão de Treinos**
+## Funcionalidades Implementadas
 
-   - Criação de treinos personalizados
-   - Adição de exercícios
-   - Configuração de séries e repetições
+1. **Autenticação**
 
-2. **Execução de Treinos**
+   - Login/Registro via Clerk
+   - Rotas protegidas
+   - Persistência de sessão
 
-   - Interface para acompanhamento
-   - Registro de séries completadas
-   - Progresso em tempo real
+2. **Gestão de Treinos**
 
-3. **Acompanhamento**
+   - Criação/Edição/Exclusão de treinos
+   - Organização por categorias
+   - Templates de treino
 
-   - Registro de medidas corporais
-   - Histórico de treinos
+3. **Execução de Treinos**
+
+   - Interface intuitiva
+   - Registro em tempo real
+   - Histórico de execução
+
+4. **Medidas Corporais**
+
+   - Registro periódico
    - Visualização de progresso
+   - Gráficos comparativos
 
-4. **Personalização**
+5. **Personalização**
    - Tema claro/escuro
    - Interface responsiva
-   - Notificações toast
+   - Notificações personalizadas
 
 ## Próximos Passos
 
-1. Implementar sincronização com backend
-2. Adicionar mais tipos de gráficos
-3. Implementar sistema de metas
-4. Adicionar compartilhamento de treinos
-5. Implementar sistema de conquistas
+1. Implementação de API Backend
+
+   - [ ] Definir estrutura de API
+   - [ ] Implementar autenticação JWT
+   - [ ] Criar endpoints RESTful
+
+2. Melhorias de UX
+
+   - [ ] Adicionar mais feedback visual
+   - [ ] Melhorar animações de transição
+   - [ ] Implementar modo offline
+
+3. Novas Funcionalidades
+
+   - [ ] Sistema de metas
+   - [ ] Compartilhamento de treinos
+   - [ ] Integração com wearables
+
+4. Otimizações
+   - [ ] Implementar PWA
+   - [ ] Melhorar performance
+   - [ ] Otimizar bundle size
 
 ## Observações Técnicas
 
-- Variáveis de ambiente configuradas para Clerk
-- Sistema de rotas protegidas implementado
-- Contextos para gerenciamento de estado
-- Componentes modulares e reutilizáveis
-- Estilização consistente com TailwindCSS
+- Service Worker implementado para melhor experiência offline
+- Uso de TailwindCSS para estilização consistente
+- Componentes modulares seguindo princípios SOLID
+- Sistema de rotas organizado e protegido
+- Persistência local via localStorage com validação de dados
+
+## Segurança
+
+- Autenticação robusta via Clerk
+- Validação de dados em todas as entradas
+- Sanitização de inputs
+- Proteção contra XSS
+- Rate limiting implementado
+- CORS configurado adequadamente
 
 ## Erros Corrigidos e Lições Aprendidas
 

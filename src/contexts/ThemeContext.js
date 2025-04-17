@@ -6,8 +6,9 @@ export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem('darkMode', !isDarkMode);
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('darkMode', String(newMode));
   };
   
   useEffect(() => {
@@ -16,6 +17,15 @@ export const ThemeProvider = ({ children }) => {
       setIsDarkMode(savedMode === 'true');
     }
   }, []);
+
+  // Efeito para aplicar a classe dark ao html
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   
   const value = {
     isDarkMode,
