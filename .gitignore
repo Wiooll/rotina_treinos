@@ -81,3 +81,4 @@ public/service-worker.js
 *.zip
 /node_modules/.cache
 *.pack
+/node_modules
