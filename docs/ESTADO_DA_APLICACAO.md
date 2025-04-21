@@ -15,6 +15,9 @@ Malhaê é uma aplicação web para acompanhamento de treinos e evolução físi
 - React Hot Toast v2.4.1 (Notificações)
 - Framer Motion v6.0.0 (Animações)
 - UUID v9.0.0 (Geração de IDs únicos)
+- Jest + React Testing Library (Testes)
+- Cypress (Testes E2E)
+- ESLint + Prettier (Qualidade de código)
 
 ### Organização de Diretórios
 
@@ -203,6 +206,40 @@ interface BodyMeasurement {
 - Sistema de rotas organizado e protegido
 - Persistência local via localStorage com validação de dados
 
+## Testes
+
+### Testes Unitários
+- Framework: Jest + React Testing Library
+- Cobertura mínima: 80%
+- Foco em componentes críticos e lógica de negócio
+
+### Testes E2E
+- Framework: Cypress
+- Cenários principais testados
+- Integração com CI/CD
+
+### Testes de Performance
+- Lighthouse scores monitorados
+- Web Vitals tracking
+- Performance budget definido
+
+## CI/CD
+
+### GitHub Actions
+- Build e testes automatizados
+- Análise de qualidade de código
+- Deploy automático para staging
+
+### Ambientes
+- Desenvolvimento: Local
+- Staging: Vercel Preview
+- Produção: Vercel Production
+
+### Monitoramento
+- Sentry para tracking de erros
+- Google Analytics para métricas de uso
+- LogRocket para session replay
+
 ## Segurança
 
 - Autenticação robusta via Clerk
@@ -211,6 +248,10 @@ interface BodyMeasurement {
 - Proteção contra XSS
 - Rate limiting implementado
 - CORS configurado adequadamente
+- Headers de segurança configurados
+- CSP implementada
+- Auditoria regular de dependências
+- 2FA habilitado para deploys
 
 ## Erros Corrigidos e Lições Aprendidas
 

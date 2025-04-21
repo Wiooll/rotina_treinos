@@ -158,6 +158,97 @@ const MemoizedComponent = React.memo(({ data }) => {
 />
 ```
 
+### 3. Problema: Bundle size muito grande
+
+**Sintoma:** Tempo de carregamento inicial lento
+**Solução:**
+- Implementado code splitting por rota
+- Otimizado imports dinâmicos
+- Removidas dependências não utilizadas
+
+```jsx
+const WorkoutPlanner = lazy(() => import('./pages/WorkoutPlanner'));
+const BodyMeasurements = lazy(() => import('./pages/BodyMeasurements'));
+
+// Rotas com lazy loading
+<Suspense fallback={<LoadingSpinner />}>
+  <Route path="/planner" element={<WorkoutPlanner />} />
+  <Route path="/measurements" element={<BodyMeasurements />} />
+</Suspense>
+```
+
+### 4. Problema: Memory leaks em componentes
+
+**Sintoma:** Warnings no console e consumo crescente de memória
+**Solução:**
+- Implementada limpeza correta de effects
+- Otimizado uso de refs
+- Adicionado cleanup em event listeners
+
+```jsx
+useEffect(() => {
+  const controller = new AbortController();
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      // ... processamento
+    } catch (error) {
+      if (!error.name === 'AbortError') {
+        console.error(error);
+      }
+    }
+  };
+  
+  fetchData();
+  
+  return () => {
+    controller.abort();
+  };
+}, [url]);
+```
+
+## Problemas de Autenticação
+
+### 1. Problema: Sessão expirando inesperadamente
+
+**Sintoma:** Usuários sendo deslogados aleatoriamente
+**Solução:**
+- Implementado refresh token automático
+- Adicionado fallback para reconexão
+- Melhorado feedback ao usuário
+
+```jsx
+const handleSessionExpired = async () => {
+  try {
+    await clerk.session.refresh();
+    toast.success('Sessão renovada com sucesso');
+  } catch (error) {
+    toast.error('Por favor, faça login novamente');
+    navigate('/login');
+  }
+};
+```
+
+### 2. Problema: Redirecionamentos infinitos na autenticação
+
+**Sintoma:** Loop de redirecionamento após login
+**Solução:**
+- Implementada verificação de estado de autenticação
+- Adicionado tratamento para URLs de callback
+- Melhorada lógica de redirecionamento
+
+```jsx
+const AuthGuard = ({ children }) => {
+  const { isLoaded, isSignedIn, isRedirecting } = useAuth();
+  
+  if (!isLoaded || isRedirecting) return <LoadingSpinner />;
+  if (!isSignedIn) return <Navigate to="/login" />;
+  
+  return children;
+};
+```
+
 ## Boas Práticas Implementadas
 
 1. **Validação de Dados:**
@@ -189,6 +280,21 @@ const MemoizedComponent = React.memo(({ data }) => {
    - Validação de dados
    - Proteção contra XSS
 
+6. **Monitoramento:**
+   - Integração com Sentry
+   - Tracking de métricas vitais
+   - Alertas configurados
+
+7. **CI/CD:**
+   - Testes automatizados
+   - Análise de qualidade
+   - Deploy controlado
+
+8. **Documentação:**
+   - Documentação técnica atualizada
+   - Guias de troubleshooting
+   - Padrões de código documentados
+
 ## Checklist de Verificação
 
 Antes de fazer deploy ou commit:
@@ -202,4 +308,8 @@ Antes de fazer deploy ou commit:
 - [ ] Performance otimizada
 - [ ] Console limpo de erros
 - [ ] Testes passando
+- [ ] Métricas de performance verificadas
+- [ ] Sentry configurado e testado
+- [ ] Bundle size otimizado
+- [ ] Testes de autenticação realizados
 - [ ] Documentação atualizada
